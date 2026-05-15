@@ -1,0 +1,310 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "infra: redis",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "up", "-d", "--wait"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}/scripts/invoke-docker-compose.ps1",
+          "up",
+          "-d",
+          "--wait"
+        ]
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "infra: redis check",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "exec", "-T", "redis", "redis-cli", "ping"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}/scripts/invoke-docker-compose.ps1",
+          "exec",
+          "-T",
+          "redis",
+          "redis-cli",
+          "ping"
+        ]
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "infra: redis down",
+      "type": "shell",
+      "command": "docker",
+      "args": ["compose", "down"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}/scripts/invoke-docker-compose.ps1",
+          "down"
+        ]
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Запуск бота",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "bot"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "windows": {
+        "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+      },
+      "linux": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Запуск API",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "api"],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "windows": {
+        "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+      },
+      "linux": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Запуск Celery worker (текст)",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-m",
+        "celery",
+        "-A",
+        "api.celery_app:celery_app",
+        "worker",
+        "-Q",
+        "inference_text",
+        "-l",
+        "info"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "windows": {
+        "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+        "args": [
+          "-m",
+          "celery",
+          "-A",
+          "api.celery_app:celery_app",
+          "worker",
+          "-Q",
+          "inference_text",
+          "-l",
+          "info",
+          "--pool=solo"
+        ]
+      },
+      "linux": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Запуск Celery worker (изображения)",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": [
+        "-m",
+        "celery",
+        "-A",
+        "api.celery_app:celery_app",
+        "worker",
+        "-Q",
+        "inference_image",
+        "-l",
+        "info"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "windows": {
+        "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+        "args": [
+          "-m",
+          "celery",
+          "-A",
+          "api.celery_app:celery_app",
+          "worker",
+          "-Q",
+          "inference_image",
+          "-l",
+          "info",
+          "--pool=solo"
+        ]
+      },
+      "linux": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Полный запуск: сервисы",
+      "dependsOn": [
+        "Запуск API",
+        "Запуск Celery worker (текст)",
+        "Запуск Celery worker (изображения)",
+        "Запуск бота"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "Полный запуск",
+      "dependsOn": [
+        "infra: redis",
+        "Полный запуск: сервисы"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "bot: install deps",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "pip", "install", "-r", "requirements.txt"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "windows": {
+        "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+      },
+      "linux": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "api: install ml deps",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["-m", "pip", "install", "-r", "api/ml/requirements-ml.txt"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "windows": {
+        "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+      },
+      "linux": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "osx": {
+        "command": "${workspaceFolder}/.venv/bin/python"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
